@@ -70,7 +70,7 @@ passport.use(new FacebookStrategy({
         provider: profile.provider,
         charts: []
       };
-      db.insertFacebookUser(user);
+      db.insertUser(user);
       return done(null, profile);
     });
   }

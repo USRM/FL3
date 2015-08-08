@@ -16,11 +16,12 @@ function insertUser(user) {
 			var collection = db.collection(typeOfLogin);
 			/* create user */
 			/*insert user into collection*/
+			console.log(user.id);
 			collection.find({
 				id: user.id
 			}).toArray(function(err, result) {
 				/* user is found */
-				console.log("Result LOGGGGGGGGGGGGGGGGGGGGIN  " + result.length);
+				console.log("length:", result.length);
 				if (!result.length) {
 					collection.insert(user, function(err, result) {
 						if (err) {
@@ -81,34 +82,6 @@ function getUserByName(username, callback) {
 	});
 }
 
-
-function insertFacebookUser(user) {
-
-	/* connection to database */
-	MongoClient.connect(url, function(err, db) {
-		/* error */
-		if (err) {
-			console.log('Unable to connect to the mongoDB server. Error:', err);
-		} else {
-			console.log('Connection established to', url);
-			/* get or create collection of users*/
-			var collection = db.collection('facebook_users');
-			/* create user */
-			/*insert user into collection*/
-			collection.insert(user, function(err, result) {
-				if (err) {
-					console.log(err);
-				} else {
-					console.log('Inserted documents into the "users" collection. The documents inserted with "_id" are:', result.length, result);
-					db.close();
-				}
-			});
-		}
-
-	});
-}
-
 module.exports.insertUser = insertUser;
 module.exports.saveChart = saveChart;
 module.exports.getUserByName = getUserByName;
-module.exports.insertFacebookUser = insertFacebookUser;
