@@ -40,7 +40,7 @@ passport.use(new passportLocal.Strategy(function(username, passport, done) {
       if (user.passport === encrypt.encrypt(passport)) {
           done(null, {
             id: username,
-            name: username
+            username: username
           });
       } else {
           done(null, null);
