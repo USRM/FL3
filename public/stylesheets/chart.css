@@ -1,0 +1,23 @@
+#chart .c3-line-data2 {
+/*  stroke-width: 5px;*/
+}
+
+#chart .c3-title {
+  font-size: 26px;
+  font-weight: bold;
+}
+
+#chart {
+  border: solid 1px #d3d2d2
+}
+
+/*-- Brush --*/
+#chart .c3-brush .extent {
+  fill-opacity: 0.3;
+  fill: #2b87e3;
+}
+
+.c3-axis-y-label, .c3-axis-y2-label, .c3-axis-x-label {
+  font-weight: bold;
+  font-size: 12px;
+}

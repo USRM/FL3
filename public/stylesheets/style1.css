@@ -1,0 +1,23 @@
+div {
+	border: 1px solid black;
+}
+#settings, #extended{
+	width: 300px;
+	float: left;
+}
+#chart {
+	width: 500px;
+	float: left;
+}
+input {
+	display: block;
+	padding: 3px;
+	margin: 5px;
+}
+.hidden {
+	display: none;
+}
+#data {
+	width: 300px;
+	clear: both;
+}
