@@ -14,8 +14,8 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 
 var url = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost:27017/Users';
 
-var FACEBOOK_APP_ID = "978565572201662";
-var FACEBOOK_APP_SECRET = "a19c4de97981669c9bf47c15d27b8991";
+var FACEBOOK_APP_ID = "145452562457437";
+var FACEBOOK_APP_SECRET = "5e46e22927a26aa5d529975afed0be43";
 
 var app = express();
 
