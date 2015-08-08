@@ -11,7 +11,7 @@ var path = require('path');
 var port = process.env.PORT || 3000;
 var db = require('./database/db');
 var FacebookStrategy = require('passport-facebook').Strategy;
-
+var TwitterStrategy = require('passport-twitter').Strategy;
 var url = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost:27017/Users';
 
 var FACEBOOK_APP_ID = "145452562457437";
@@ -75,6 +75,26 @@ passport.use(new FacebookStrategy({
     });
   }
 ));
+passport.use(new TwitterStrategy({
+    consumerKey: "8D82Yvd3F382igAN8gsCXUtJY",
+    consumerSecret: "fZOsXoJ6qveLNqQadTcDhE6cqZZXejaqtO8v0V0rPn0yUBBK6j",
+    callbackURL: "/twitter/callback"
+  },
+  function(token, tokenSecret, profile, cb) {
+    // In this example, the user's Twitter profile is supplied as the user
+    // record.  In a production-quality application, the Twitter profile should
+    // be associated with a user record in the application's database, which
+    // allows for account linking and authentication with other identity
+    // providers.
+    // var user = {
+    //     id: profile.id,
+    //     name: profile.displayName,
+    //     provider: profile.provider,
+    //     charts: []
+    //   };
+    console.log("Twitter profile " + profile);
+    return cb(null, profile);
+  }));
 
 passport.serializeUser(function(user, done) {
   done(null, user);
