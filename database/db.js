@@ -12,6 +12,7 @@ function insertUser(user) {
 			console.log('Connection established to', url);
 			/* get or create collection of users*/
 			var typeOfLogin = user.provider === "local" ? "users" : "facebook_users";
+			console.log("TYPE OF LOGGGGGGGGGGGGGGGGGGGGIN  " + typeOfLogin);
 			var collection = db.collection(typeOfLogin);
 			/* create user */
 			/*insert user into collection*/
@@ -19,6 +20,7 @@ function insertUser(user) {
 				id: user.id
 			}).toArray(function(err, result) {
 				/* user is found */
+				console.log("Result LOGGGGGGGGGGGGGGGGGGGGIN  " + result.length);
 				if (!result.length) {
 					collection.insert(user, function(err, result) {
 						if (err) {
