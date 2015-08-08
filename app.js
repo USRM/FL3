@@ -12,7 +12,7 @@ var port = process.env.PORT || 3000;
 var db = require('./database/db');
 var FacebookStrategy = require('passport-facebook').Strategy;
 
-var url = 'mongodb://localhost:27017/Users';
+var url == process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost:27017/Users';
 
 var FACEBOOK_APP_ID = "978565572201662"
 var FACEBOOK_APP_SECRET = "a19c4de97981669c9bf47c15d27b8991";
