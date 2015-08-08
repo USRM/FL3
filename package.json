@@ -3,18 +3,32 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
-  },
+    "test": "echo \"Error: no test specified\" && exit 1"
+    },
   "dependencies": {
-    "body-parser": "~1.12.0",
+    "bcryptjs": "^2.2.1",
+    "body-parser": "^1.12.4",
     "cookie-parser": "~1.3.4",
     "debug": "~2.1.1",
+    "ejs": "^2.3.3",
     "express": "~4.12.2",
+    "express-session": "^1.11.3",
+    "mongodb": "^2.0.40",
     "morgan": "~1.5.1",
+    "passport": "^0.2.2",
+    "passport-facebook": "^2.0.0",
+    "passport-http": "^0.2.2",
+    "passport-local": "^1.0.0",
     "serve-favicon": "~2.2.0"
   },
+  "keywords": [
+    "example",
+    "heroku"
+  ],
+  "engines": {
+    "node": "0.12.0"
+  },
   "main": "app.js",
-  "devDependencies": {},
-  "author": "",
+  "author": "Oleh",
   "license": "ISC"
 }
