@@ -1,5 +1,5 @@
 var mongodb = require('mongodb');
-var url = = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost:27017/Users';
+var url = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost:27017/Users';
 var MongoClient = mongodb.MongoClient;
 
 function insertUser(user) {
