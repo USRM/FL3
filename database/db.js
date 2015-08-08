@@ -3,7 +3,6 @@ var url = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://loca
 var MongoClient = mongodb.MongoClient;
 
 function insertUser(user) {
-
 	/* connection to database */
 	MongoClient.connect(url, function(err, db) {
 		/* error */
@@ -12,15 +11,23 @@ function insertUser(user) {
 		} else {
 			console.log('Connection established to', url);
 			/* get or create collection of users*/
-			var collection = db.collection('users');
+			var typeOfLogin = user.provider === "local" ? "users" : "facebook_users";
+			var collection = db.collection(typeOfLogin);
 			/* create user */
 			/*insert user into collection*/
-			collection.insert(user, function(err, result) {
-				if (err) {
-					console.log(err);
-				} else {
-					console.log('Inserted documents into the "users" collection. The documents inserted with "_id" are:', result.length, result);
-					db.close();
+			collection.find({
+				id: user.id
+			}).toArray(function(err, result) {
+				/* user is found */
+				if (!result.length) {
+					collection.insert(user, function(err, result) {
+						if (err) {
+							console.log(err);
+						} else {
+							console.log('Inserted documents into the "users" collection. The documents inserted with "_id" are:', result.length, result);
+							db.close();
+						}
+					});
 				}
 			});
 		}
@@ -31,7 +38,7 @@ function insertUser(user) {
 function saveChart(user, chart) {
 	MongoClient.connect(url, function(err, db) {
 		console.log("USER ::::  " + user);
-		var typeOfLogin = user.provider === "local" ? "users" : "facebook_users"; 
+		var typeOfLogin = user.provider === "local" ? "users" : "facebook_users";
 		console.log(typeOfLogin);
 		var collection = db.collection(typeOfLogin);
 		collection.update({
@@ -52,7 +59,7 @@ function getUserByName(username, callback) {
 	/* connection to database */
 	MongoClient.connect(url, function(err, db) {
 		/* Error */
-		var user; 
+		var user;
 		if (err) {
 			console.log('Unable to connect to the mongoDB server. Error:', err);
 		} else {
