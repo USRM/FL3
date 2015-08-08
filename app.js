@@ -69,14 +69,11 @@ passport.use(new FacebookStrategy({
 ));
 
 passport.serializeUser(function(user, done) {
-  done(null, user.id);
+  done(null, user);
 });
 
-passport.deserializeUser(function(id, done) {
-  done(null, {
-    id: id,
-    name: id
-  });
+passport.deserializeUser(function(obj, done) {
+  done(null, obj);
 });
 
 app.use('/', routes);
