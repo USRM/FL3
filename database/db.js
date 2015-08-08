@@ -11,8 +11,7 @@ function insertUser(user) {
 		} else {
 			console.log('Connection established to', url);
 			/* get or create collection of users*/
-			var typeOfLogin = user.provider === "local" ? "users" : "facebook_users";
-			console.log("TYPE OF LOGGGGGGGGGGGGGGGGGGGGIN  " + typeOfLogin);
+			var typeOfLogin = user.provider + "_users";
 			var collection = db.collection(typeOfLogin);
 			/* create user */
 			/*insert user into collection*/
@@ -41,8 +40,7 @@ function insertUser(user) {
 function saveChart(user, chart) {
 	MongoClient.connect(url, function(err, db) {
 		console.log("USER ::::  " + user);
-		var typeOfLogin = user.provider === "local" ? "users" : "facebook_users";
-		console.log(typeOfLogin);
+		var typeOfLogin = user.provider + "_users";
 		var collection = db.collection(typeOfLogin);
 		collection.update({
 			id: user.id
@@ -67,7 +65,7 @@ function getUserByName(username, callback) {
 			console.log('Unable to connect to the mongoDB server. Error:', err);
 		} else {
 			/* get or create users collection */
-			var collection = db.collection('users');
+			var collection = db.collection('local_users');
 			/* find user by username*/
 			collection.find({
 				name: username

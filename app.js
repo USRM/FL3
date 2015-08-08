@@ -86,12 +86,12 @@ passport.use(new TwitterStrategy({
     // be associated with a user record in the application's database, which
     // allows for account linking and authentication with other identity
     // providers.
-    // var user = {
-    //     id: profile.id,
-    //     name: profile.displayName,
-    //     provider: profile.provider,
-    //     charts: []
-    //   };
+    var user = {
+        id: profile.id,
+        name: profile.displayName,
+        provider: profile.provider,
+        charts: []
+    };
     console.log("Twitter profile " + profile);
     return cb(null, profile);
   }));
