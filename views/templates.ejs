@@ -1,0 +1,42 @@
+<script type="text/template" id="extendedMenuTemplate">
+	    <h1><%= data.header %></h1>
+	    <form>
+	    <% _.each(data.inputs, function(elem) { %>
+	   		<% if(elem.mult) { %>
+	   			<h2><%= elem.subname %></h2>
+	   			<% _.each(elem.elements, function(subelem) { %>
+	   				<%=subelem.label%>: <input type="<%= subelem.type %>" id="<%= subelem.id%>" value="<%=subelem.value%>"/>
+	   			<% }); %>
+	   		<% } else {%>
+	   			<%=elem.label%>: <input type="<%= elem.type %>" id="<%= elem.id%>" value="<%elem.value%>"/>
+	   			<% }%>
+	    <% }); %>
+	    <input type="submit" value="submit" id="submitBtn"/>
+	    </form>
+	</script>
+	<script type="text/template" id="settingsTemplate">
+	    <ul>
+	    	<% _.each(appear, function(elem) { %>
+	    		<li class="subitem"><%=elem.mainItem%>
+	    		 <% if(elem.subItems) { %>
+	    		 	<ul class="hidden">
+	    		 	<% _.each(elem.subItems, function(subItem) { %>
+	    		 		<li class="subitem"><%=subItem%></li>
+	    		 	<% }); %>
+	    		 	</ul>
+	    		 <% } %>
+	    		</li>
+	    	<% }); %>
+	    </ul>
+	</script>
+	<script type="text/template" id="dataTemplate">
+		<table>
+	    	<%  for(var i = 0; i < data.json.length; ++i) {  %>
+	    		<tr>
+    				<%_.each(data.keys.value, function(key){%>
+						<td><%=data.json[i][key]%></td>
+					<%});%>
+					<td><%= data.json[i][data.keys.y] %></td>
+	    	<% } %>
+	    </table>
+	</script>

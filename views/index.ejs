@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Main Page</title>
+	<link rel="stylesheet" href="public/stylesheets/homepage.css">
+</head>
+<body>
+	<nav>BONchart
+		<div id='userInfo'>
+			<% if(!isAuthenticated) { %>
+				<a href="/login">Log in</a>
+				<a href="/registration">Registration</a>
+				<a href="/facebook"><img src="public/images/login-with-facebook.png" width="154" height="22"></a>
+			<% } else { %>
+				<a href='/'>Hello, <%= user.name %> <%= user.surname %></a>
+				<a href="/logout">Log out</a>
+			<%}%>
+		</div>
+
+	</nav>
+	
+	
+</body>
+</html>
