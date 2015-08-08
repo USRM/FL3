@@ -54,9 +54,11 @@ router.get('/registration', function(req, res) {
 /* Registrate new user */
 router.post('/registration', function(req, res) {
 	var user = {
+			id: req.body.email,
 			name: req.body.name,
 			email: req.body.email,
 			passport: encrypt.encrypt(req.body.password),
+			provider: "local",
 			charts: []
 		};
 	db.insertUser(user);
@@ -68,9 +70,9 @@ router.post('/save', function(req, res) {
 
 	if (req.isAuthenticated()) {
 		console.log(req.user.id);
-		var userID = req.user.id;
+		var user = req.user;
 		var chart = req.body;
-		db.saveChart(userID, chart);
+		db.saveChart(user, chart);
 	} else {
 		console.log("Please login");
 	}

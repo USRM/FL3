@@ -20,6 +20,7 @@ var FACEBOOK_APP_SECRET = "5e46e22927a26aa5d529975afed0be43";
 var app = express();
 
 app.set('view engine', 'ejs');
+
 app.use("/public", express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
@@ -39,8 +40,9 @@ passport.use(new passportLocal.Strategy(function(username, passport, done) {
     if (user) {
       if (user.passport === encrypt.encrypt(passport)) {
           done(null, {
-            id: username,
-            displayName: username
+            id: user.id,
+            displayName: username,
+            provider: user.provider
           });
       } else {
           done(null, null);
@@ -58,11 +60,17 @@ passport.use(new FacebookStrategy({
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
     process.nextTick(function () {
-      console.log(profile);
       // To keep the example simple, the user's Facebook profile is returned to
       // represent the logged-in user.  In a typical application, you would want
       // to associate the Facebook account with a user record in your database,
       // and return that user instead.
+      var user = {
+        id: profile.id,
+        name: profile.displayName,
+        provider: profile.provider,
+        charts: []
+      };
+      db.insertFacebookUser(user);
       return done(null, profile);
     });
   }

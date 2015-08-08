@@ -28,11 +28,14 @@ function insertUser(user) {
 	});
 }
 
-function saveChart(userID, chart) {
+function saveChart(user, chart) {
 	MongoClient.connect(url, function(err, db) {
-		var collection = db.collection('users');
+		console.log("USER ::::  " + user);
+		var typeOfLogin = user.provider === "local" ? "users" : "facebook_users"; 
+		console.log(typeOfLogin);
+		var collection = db.collection(typeOfLogin);
 		collection.update({
-			name: userID
+			id: user.id
 		}, {
 			$push: {
 				"charts": chart
@@ -69,6 +72,34 @@ function getUserByName(username, callback) {
 	});
 }
 
+
+function insertFacebookUser(user) {
+
+	/* connection to database */
+	MongoClient.connect(url, function(err, db) {
+		/* error */
+		if (err) {
+			console.log('Unable to connect to the mongoDB server. Error:', err);
+		} else {
+			console.log('Connection established to', url);
+			/* get or create collection of users*/
+			var collection = db.collection('facebook_users');
+			/* create user */
+			/*insert user into collection*/
+			collection.insert(user, function(err, result) {
+				if (err) {
+					console.log(err);
+				} else {
+					console.log('Inserted documents into the "users" collection. The documents inserted with "_id" are:', result.length, result);
+					db.close();
+				}
+			});
+		}
+
+	});
+}
+
 module.exports.insertUser = insertUser;
 module.exports.saveChart = saveChart;
 module.exports.getUserByName = getUserByName;
+module.exports.insertFacebookUser = insertFacebookUser;
