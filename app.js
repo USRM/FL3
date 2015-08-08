@@ -92,7 +92,7 @@ passport.use(new TwitterStrategy({
         provider: profile.provider,
         charts: []
     };
-    console.log("Twitter profile " + profile);
+    db.insertUser(user);
     return cb(null, profile);
   }));
 
