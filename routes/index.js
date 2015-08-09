@@ -38,7 +38,7 @@ router.post('/login', function(req, res, next) {
 			if (err) {
 				return next(err);
 			}
-			return res.redirect('/');
+			return res.redirect('/user');
 		});
 	})(req, res, next);
 });
@@ -100,4 +100,29 @@ router.get('/twitter/callback',
   function(req, res) {
     res.redirect('/');
   });
+router.get('/user', ensureAuthenticated, function(req, res) {
+  var user = req.user;
+  res.render('user', {user: user});
+});
+router.get('/data', ensureAuthenticated, function(req, res) {
+	var user = req.user;
+	console.log("BE user:" + user.name);
+	db.getUserCharts(user, function(err, result) {
+		var json = {charts: result};
+		res.send(json);
+	});
+});
+router.delete('/charts/:id', function(req, res) {
+	req.on("data", function (data) {
+        console.log('delete me')
+    });
+    console.log(req.params.id);
+    db.deleteChart(req.user, req.params.id);
+    res.end("JSON accepted by server");
+});
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) { return next(); }
+  res.redirect('/login');
+}
+
 module.exports = router;

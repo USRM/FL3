@@ -1,9 +1,14 @@
 #userInfo {
 	float: right;
 }
+body {
+	padding: 0;
+	margin: 0;
+}
 nav {
 	background-color: #13073A;
 	color: white;
+	height: 70px;
 }
 a {
 	color: white;

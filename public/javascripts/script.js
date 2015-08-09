@@ -231,11 +231,21 @@ function initApp() {
 initApp();
 
 function save() {
+	var chartName = "Name";
+	var chartDescription = "My first chart. Save it. MongoDB.";
+	var id = Math.floor(Math.random()*1000000);
+	var dataForServer = {
+		id: id,
+		name: chartName,
+		description: chartDescription,
+		chartData: chartData
+	};
+
 	var request = $.ajax({
 		url: "/save",
 		async: true,
 		type: "POST",
-		data: chartData,
+		data: dataForServer,
 		contentType: "application/x-www-form-urlencoded", //This is what made the difference.
 		dataType: "json",
 

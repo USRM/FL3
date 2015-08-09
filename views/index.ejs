@@ -10,10 +10,10 @@
 			<% if(!isAuthenticated) { %>
 				<a href="/login">Log in</a>
 				<a href="/registration">Registration</a>
-				<a href="/facebook"><img src="public/images/login-with-facebook.png" width="154" height="22"></a>
-				<a href="/twitter">Log In with Twitter</a>
+				<a href="/facebook"><img src="public/images/facebook.png" width="50" height="50"></a>
+				<a href="/twitter"><img src="public/images/twitter.png" width="50" height="50"></a>
 			<% } else { %>
-				<a href='/'>Hello, <%= user.displayName %></a>
+				<a href='/'>Hello, <%= user.name %></a>
 				<a href="/logout">Log out</a>
 			<%}%>
 		</div>

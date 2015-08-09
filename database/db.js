@@ -39,7 +39,6 @@ function insertUser(user) {
 
 function saveChart(user, chart) {
 	MongoClient.connect(url, function(err, db) {
-		console.log("USER ::::  " + user);
 		var typeOfLogin = user.provider + "_users";
 		var collection = db.collection(typeOfLogin);
 		collection.update({
@@ -49,7 +48,6 @@ function saveChart(user, chart) {
 				"charts": chart
 			}
 		}, function(err, doc) {
-			console.log(doc);
 			db.close();
 		});
 
@@ -79,7 +77,87 @@ function getUserByName(username, callback) {
 		}
 	});
 }
+function getUserCharts(user, callback) {
+	MongoClient.connect(url, function(err, db) {
+		/* Error */
+		if (err) {
+			console.log('Unable to connect to the mongoDB server. Error:', err);
+		} else {
+			/* get or create users collection */
+			var typeOfLogin = user.provider + "_users";
+			var collection = db.collection(typeOfLogin);
+			/* find user by username*/
+			collection.find({
+				name: user.name
+			}).toArray(function(err, result) {
+				/* user is found */
 
+				console.log("Is user finded? : " + result.length);
+				var data = result.length ? result[0] : undefined;
+				console.log("data" + data);
+				if(data) {
+						console.log("User: " + data.name + " " + data.charts);
+					callback(err, data.charts);
+				}
+				db.close();
+			});
+		}
+	});
+}
+function deleteChart(user, id) {
+	MongoClient.connect(url, function(err, db) {
+		/* Error */
+		if (err) {
+			console.log('Unable to connect to the mongoDB server. Error:', err);
+		} else {
+			/* get or create users collection */
+			var typeOfLogin = user.provider + "_users";
+			var collection = db.collection(typeOfLogin);
+			/* find user by username*/
+			collection.find({
+				name: user.name
+			}).toArray(function(err, result) {
+				/* user is found */
+
+				console.log("Is user finded? : " + result.length);
+				var data = result.length ? result[0] : undefined;
+				console.log("data" + data);
+				if(data) {
+					
+					var charts = data.charts;
+					console.log(charts);
+					for(var i = 0; i < charts.length; ++i) {
+						console.log("cI: "+ charts[i].id + " id: " + id);
+						if(charts[i].id == id) {
+							charts.splice(i,1);
+							console.log(charts);
+							break;
+						}
+					}
+					collection.update({name: user.name}, {$set: {charts: charts}});
+				}
+				db.close();
+			});
+		}
+	});
+}
+// db.collection('test').findAndModify(
+// 							{name: user.name}, // query
+// 							{
+// 								$set: {
+// 									charts: charts
+// 								}
+// 							}, // replacement, replaces only the field "hi"
+// 							function(err, object) {
+// 								if (err) {
+// 									console.log(err.message); // returns error if no matching object found
+// 								} else {
+// 									console.log(object);
+// 									db.close();
+// 								}
+// 							});
 module.exports.insertUser = insertUser;
 module.exports.saveChart = saveChart;
 module.exports.getUserByName = getUserByName;
+module.exports.getUserCharts = getUserCharts;
+module.exports.deleteChart = deleteChart;
