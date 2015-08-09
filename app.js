@@ -71,7 +71,7 @@ passport.use(new FacebookStrategy({
         charts: []
       };
       db.insertUser(user);
-      return done(null, profile);
+      return done(null, user);
     });
   }
 ));
@@ -93,7 +93,7 @@ passport.use(new TwitterStrategy({
         charts: []
     };
     db.insertUser(user);
-    return cb(null, profile);
+    return cb(null, user);
   }));
 
 passport.serializeUser(function(user, done) {
