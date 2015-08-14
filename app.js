@@ -23,7 +23,9 @@ app.set('view engine', 'ejs');
 
 app.use("/public", express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json()); // for parsing application/json
-app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({
+  extended: true
+})); // for parsing application/x-www-form-urlencoded
 app.use(cookieParser());
 app.use(expressSession({
   secret: process.env.SESSION_SECRET || "secret",
@@ -35,20 +37,20 @@ app.use(passport.initialize());
 app.use(passport.session());
 /* Login check */
 passport.use(new passportLocal.Strategy(function(username, passport, done) {
-  db.checkСorrectness(username, function (err, user) {
+  db.checkСorrectness(username, function(err, user) {
     if (user) {
       if (user.passport === encrypt.encrypt(passport)) {
-          done(null, {
-            id: user.id,
-            name: user.name,
-            provider: user.provider
-          });
+        done(null, {
+          id: user.id,
+          name: user.name,
+          provider: user.provider
+        });
       } else {
-          done(null, null);
-        }
+        done(null, null);
+      }
     } else {
       done(null, null);
-      } 
+    }
   });
 }));
 passport.use(new FacebookStrategy({
@@ -58,7 +60,7 @@ passport.use(new FacebookStrategy({
   },
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
-    process.nextTick(function () {
+    process.nextTick(function() {
       // To keep the example simple, the user's Facebook profile is returned to
       // represent the logged-in user.  In a typical application, you would want
       // to associate the Facebook account with a user record in your database,
@@ -66,6 +68,16 @@ passport.use(new FacebookStrategy({
       var FB = require('fb');
       FB.setAccessToken(accessToken);
 
+      var body = 'My first post using facebook-node-sdk';
+      FB.api('me/feed', 'post', {
+        message: body
+      }, function(res) {
+        if (!res || res.error) {
+          console.log(!res ? 'error occurred' : res.error);
+          return;
+        }
+        console.log('Post Id: ' + res.id);
+      });
       var user = {
         accessToken: accessToken,
         id: profile.id,
@@ -90,10 +102,10 @@ passport.use(new TwitterStrategy({
     // allows for account linking and authentication with other identity
     // providers.
     var user = {
-        id: profile.id,
-        name: profile.displayName,
-        provider: profile.provider,
-        charts: []
+      id: profile.id,
+      name: profile.displayName,
+      provider: profile.provider,
+      charts: []
     };
     db.insertUser(user);
     return cb(null, user);
