@@ -13,7 +13,6 @@ router.get('/', function(req, res, next) {
 });
 router.get('/fac', function(req, res) {
 	var FB = require('fb');
-	FB.setAccessToken(req.accessToken);
 
 	var body = 'My first post using facebook-node-sdk';
 	FB.api('me/feed', 'post', { message: body}, function (res) {
