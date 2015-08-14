@@ -35,13 +35,12 @@ app.use(passport.initialize());
 app.use(passport.session());
 /* Login check */
 passport.use(new passportLocal.Strategy(function(username, passport, done) {
-  
-  db.getUserByName(username, function (err, user) {
+  db.checkСorrectness(username, function (err, user) {
     if (user) {
       if (user.passport === encrypt.encrypt(passport)) {
           done(null, {
             id: user.id,
-            name: username,
+            name: user.name,
             provider: user.provider
           });
       } else {
