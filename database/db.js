@@ -11,11 +11,9 @@ function insertUser(user) {
 		} else {
 			console.log('Connection established to', url);
 			/* get or create collection of users*/
-			var typeOfLogin = user.provider + "_users";
-			var collection = db.collection(typeOfLogin);
+			var collection = db.collection("users");
 			/* create user */
 			/*insert user into collection*/
-			console.log(user.id);
 			collection.find({
 				id: user.id
 			}).toArray(function(err, result) {
@@ -37,6 +35,34 @@ function insertUser(user) {
 	});
 }
 
+function savePublicChart(chart) {
+	MongoClient.connect(url, function(err, db) {
+		var collection = db.collection("charts");
+		collection.update({
+			url: chart.url
+		}, 
+			{
+				name: chart.name,
+				description: chart.description,
+				data: chart.data,
+				'public': chart.public,
+				url: chart.url,
+				owner: chart.owner
+			}
+		, {
+			'upsert': true
+		});
+		/*collection.insert(chart, function(err, result) {
+			if (err) {
+				console.log(err);
+			} else {
+				console.log('Inserted documents into the "users" collection. The documents inserted with "_id" are:', result.length, result);
+				db.close();
+			}
+		});*/
+	});
+}
+
 function saveChart(user, chart) {
 	MongoClient.connect(url, function(err, db) {
 		var typeOfLogin = user.provider + "_users";
@@ -54,7 +80,7 @@ function saveChart(user, chart) {
 	});
 }
 
-function getUserByName(username, callback) {
+function checkСorrectness(username, callback) {
 	/* connection to database */
 	MongoClient.connect(url, function(err, db) {
 		/* Error */
@@ -63,10 +89,10 @@ function getUserByName(username, callback) {
 			console.log('Unable to connect to the mongoDB server. Error:', err);
 		} else {
 			/* get or create users collection */
-			var collection = db.collection('local_users');
+			var collection = db.collection('users');
 			/* find user by username*/
 			collection.find({
-				name: username
+				id: username
 			}).toArray(function(err, result) {
 				/* user is found */
 				console.log(result.length);
@@ -77,6 +103,7 @@ function getUserByName(username, callback) {
 		}
 	});
 }
+
 function getUserCharts(user, callback) {
 	MongoClient.connect(url, function(err, db) {
 		/* Error */
@@ -84,80 +111,76 @@ function getUserCharts(user, callback) {
 			console.log('Unable to connect to the mongoDB server. Error:', err);
 		} else {
 			/* get or create users collection */
-			var typeOfLogin = user.provider + "_users";
-			var collection = db.collection(typeOfLogin);
+			var collection = db.collection("charts");
 			/* find user by username*/
 			collection.find({
-				name: user.name
+				owner: user.id
 			}).toArray(function(err, result) {
 				/* user is found */
-
-				console.log("Is user finded? : " + result.length);
-				var data = result.length ? result[0] : undefined;
-				console.log("data" + data);
-				if(data) {
-						console.log("User: " + data.name + " " + data.charts);
-					callback(err, data.charts);
+				console.log(result.length);
+				var json = {};
+				json.charts = [];
+				for (var i = 0; i < result.length; ++i) {
+					console.log(result[i]);
+					json.charts.push(result[i]);
 				}
+				callback(err, json);
+				// }
 				db.close();
 			});
 		}
 	});
 }
-function deleteChart(user, id) {
+
+function getChartByUrl(chartUrl, callback) {
 	MongoClient.connect(url, function(err, db) {
 		/* Error */
 		if (err) {
 			console.log('Unable to connect to the mongoDB server. Error:', err);
 		} else {
 			/* get or create users collection */
-			var typeOfLogin = user.provider + "_users";
-			var collection = db.collection(typeOfLogin);
+			var collection = db.collection("charts");
 			/* find user by username*/
 			collection.find({
-				name: user.name
+				url: chartUrl
 			}).toArray(function(err, result) {
 				/* user is found */
-
 				console.log("Is user finded? : " + result.length);
-				var data = result.length ? result[0] : undefined;
-				console.log("data" + data);
-				if(data) {
-					
-					var charts = data.charts;
-					console.log(charts);
-					for(var i = 0; i < charts.length; ++i) {
-						console.log("cI: "+ charts[i].id + " id: " + id);
-						if(charts[i].id == id) {
-							charts.splice(i,1);
-							console.log(charts);
-							break;
-						}
-					}
-					collection.update({name: user.name}, {$set: {charts: charts}});
+				var chart = result.length ? result[0] : undefined;
+				console.log("chart  :" + chart);
+				if (chart) {
+					callback(err, chart);
 				}
 				db.close();
 			});
 		}
 	});
 }
-// db.collection('test').findAndModify(
-// 							{name: user.name}, // query
-// 							{
-// 								$set: {
-// 									charts: charts
-// 								}
-// 							}, // replacement, replaces only the field "hi"
-// 							function(err, object) {
-// 								if (err) {
-// 									console.log(err.message); // returns error if no matching object found
-// 								} else {
-// 									console.log(object);
-// 									db.close();
-// 								}
-// 							});
+
+function deleteChart(id) {
+	MongoClient.connect(url, function(err, db) {
+		/* Error */
+		if (err) {
+			console.log('Unable to connect to the mongoDB server. Error:', err);
+		} else {
+			/* get or create users collection */
+			var collection = db.collection("charts");
+			collection.remove({
+				url: id
+			}, function(err, result) {
+				if (err) {
+					console.log(err);
+				}
+				console.log(result);
+				db.close();
+			});
+		}
+	});
+}
 module.exports.insertUser = insertUser;
 module.exports.saveChart = saveChart;
-module.exports.getUserByName = getUserByName;
+module.exports.checkСorrectness = checkСorrectness;
 module.exports.getUserCharts = getUserCharts;
 module.exports.deleteChart = deleteChart;
+module.exports.savePublicChart = savePublicChart;
+module.exports.getChartByUrl = getChartByUrl;

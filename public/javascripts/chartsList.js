@@ -6,10 +6,10 @@ function success(data) {
 	for (var i = 0; i < data.charts.length; ++i) {
 
 		charts.push(new ChartModel({
-			id: data.charts[i].id,
+			id: data.charts[i].url,
 			name: data.charts[i].name,
 			description: data.charts[i].description,
-			chart: data.charts[i].chartData
+			chart: data.charts[i].data
 
 		}));
 		console.log(charts[i]);
