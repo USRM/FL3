@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>View Page</title>
+	<meta charset="utf-8" /> 
+</head>
+<body>
+<div id="chart"></div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="public/javascripts/libs/c3.min.js"></script>
+	<script src="public/javascripts/libs/d3.js"></script>
+<script type="text/javascript"> 
+	var data = JSON.parse('<%- data%>');
+	c3.generate(data);
+</script>
+</body>
+</html>
