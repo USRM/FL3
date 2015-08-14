@@ -11,6 +11,19 @@ router.get('/', function(req, res, next) {
 		user: req.user
 	});
 });
+router.get('/fac', function(req, res) {
+	var FB = require('fb');
+	FB.setAccessToken(req.accessToken);
+
+	var body = 'My first post using facebook-node-sdk';
+	FB.api('me/feed', 'post', { message: body}, function (res) {
+  		if(!res || res.error) {
+  	  console.log(!res ? 'error occurred' : res.error);
+   	 return;
+  	}
+  	console.log('Post Id: ' + res.id);
+	});
+});
 
 router.get('/login', function(req, res, next) {
 	/* Entered login or password is incorrect */
@@ -60,7 +73,7 @@ router.post('/registration', function(req, res) {
 			charts: []
 		};
 	db.insertUser(user);
-	res.redirect('/');
+	res.redirect('/user');
 });
 
 router.get('/editor', function(req, res) {

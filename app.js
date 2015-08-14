@@ -64,6 +64,7 @@ passport.use(new FacebookStrategy({
       // to associate the Facebook account with a user record in your database,
       // and return that user instead.
       var user = {
+        accessToken: accessToken,
         id: profile.id,
         name: profile.displayName,
         provider: profile.provider,

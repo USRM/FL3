@@ -29,7 +29,7 @@ var ChartModel = Backbone.Model.extend({
 });
 var ChartView = Backbone.View.extend({
 	render: function() {
-		this.$el.html("" + this.model.get('name') + this.model.get('description') + "<input type='button' value='delete' id='delete'/>");
+		this.$el.html("" + this.model.get('name') + this.model.get('description') + "<input type='button' value='delete' id='delete'/> <div id='edit'><a href='/editor'><img  width='50' heigth='50' src='/public/images/edit.svg'/></a></div>");
 		return this;
 	},
 	events: {
