@@ -75,13 +75,13 @@ router.get('/login', function(req, res, next) {
 		var accessToken = res.access_token;
 
 		console.log("TESTT:"+accessToken);
-		FB.setAccessToken('access_token');
+		FB.setAccessToken(accessToken);
 
 		var body = 'My first post using facebook-node-sdk';
 		FB.api('me/feed', 'post', {
 			message: body
 		}, function(res) {
-			console.log("TESTT:"+res);
+			console.log("TESTT:"+res.error);
 			if (!res || res.error) {
 				console.log(!res ? 'error occurred' : res.error);
 				return;
