@@ -15,12 +15,14 @@ router.get('/fac', function(req, res) {
 	var FB = require('fb');
 
 	var body = 'My first post using facebook-node-sdk';
-	FB.api('me/feed', 'post', { message: body}, function (res) {
-  		if(!res || res.error) {
-  	  console.log(!res ? 'error occurred' : res.error);
-   	 return;
-  	}
-  	console.log('Post Id: ' + res.id);
+	FB.api('me/feed', 'post', {
+		message: body
+	}, function(res) {
+		if (!res || res.error) {
+			console.log(!res ? 'error occurred' : res.error);
+			return;
+		}
+		console.log('Post Id: ' + res.id);
 	});
 });
 // var accessToken = ''; 
@@ -59,19 +61,34 @@ router.get('/login', function(req, res, next) {
 	});
 	// console.log("ACS" + req.user.accessTokens);
 	var FB = require('fb');
- 
+
 	FB.api('oauth/access_token', {
-    	client_id: '145452562457437',
-    	client_secret: '5e46e22927a26aa5d529975afed0be43',
-   		 grant_type: 'client_credentials'
-	}, function (res) {
-    	if(!res || res.error) {
-        	console.log(!res ? 'error occurred' : res.error);
-        	return;
-    	}
-    
-    var accessToken = res.access_token;
-});
+		client_id: '145452562457437',
+		client_secret: '5e46e22927a26aa5d529975afed0be43',
+		grant_type: 'client_credentials'
+	}, function(res) {
+		if (!res || res.error) {
+			console.log(!res ? 'error occurred' : res.error);
+			return;
+		}
+
+		var accessToken = res.access_token;
+
+		console.log("TESTT:"+accessToken);
+		FB.setAccessToken('access_token');
+
+		var body = 'My first post using facebook-node-sdk';
+		FB.api('me/feed', 'post', {
+			message: body
+		}, function(res) {
+			console.log("TESTT:"+res);
+			if (!res || res.error) {
+				console.log(!res ? 'error occurred' : res.error);
+				return;
+			}
+			console.log('Post Id: ' + res.id);
+		});
+	});
 	//
 	// accessToken = req.user.accessTokens;
 	// postToFacebook('test from my personal server');
@@ -110,12 +127,12 @@ router.get('/registration', function(req, res) {
 /* Registrate new user */
 router.post('/registration', function(req, res) {
 	var user = {
-			id: req.body.email,
-			name: req.body.name,
-			provider: "local",
-			passport: encrypt.encrypt(req.body.password),
-			charts: []
-		};
+		id: req.body.email,
+		name: req.body.name,
+		provider: "local",
+		passport: encrypt.encrypt(req.body.password),
+		charts: []
+	};
 	db.insertUser(user);
 	res.redirect('/user');
 });
@@ -125,34 +142,40 @@ router.get('/editor', function(req, res) {
 });
 
 router.get('/facebook',
-  passport.authenticate('facebook'),
-  function(req, res){
-    // The request will be redirected to Facebook for authentication, so this
-    // function will not be called.
-});
+	passport.authenticate('facebook'),
+	function(req, res) {
+		// The request will be redirected to Facebook for authentication, so this
+		// function will not be called.
+	});
 
-router.get('/facebook/callback', 
-  passport.authenticate('facebook', { failureRedirect: '/login' }),
-  function(req, res) {
-    res.redirect('/');
-  });
+router.get('/facebook/callback',
+	passport.authenticate('facebook', {
+		failureRedirect: '/login'
+	}),
+	function(req, res) {
+		res.redirect('/');
+	});
 
 router.get('/twitter', passport.authenticate('twitter'));
 
-router.get('/twitter/callback', 
-  passport.authenticate('twitter', { failureRedirect: '/login' }),
-  function(req, res) {
-    res.redirect('/');
-  });
+router.get('/twitter/callback',
+	passport.authenticate('twitter', {
+		failureRedirect: '/login'
+	}),
+	function(req, res) {
+		res.redirect('/');
+	});
 
 router.get('/user', ensureAuthenticated, function(req, res) {
-  var user = req.user;
-  res.render('user', {user: user});
+	var user = req.user;
+	res.render('user', {
+		user: user
+	});
 });
 
-router.post('/save', function(req, res) {	
-	
-	if(req.isAuthenticated()) {
+router.post('/save', function(req, res) {
+
+	if (req.isAuthenticated()) {
 		var user = req.user;
 		var chart = req.body;
 		console.log("chart data" + chart);
@@ -161,8 +184,8 @@ router.post('/save', function(req, res) {
 			owner: user.id,
 			name: chart.name,
 			description: chart.description,
-			data:  chart.data
-		} 
+			data: chart.data
+		}
 		db.savePublicChart(elem);
 	} else {
 		console.log("Please login");
@@ -190,12 +213,12 @@ router.post('/share', function(req, res) {
 });
 
 router.delete('/charts/:id', function(req, res) {
-	req.on("data", function (data) {
-        console.log('delete me')
-    });
-    console.log(req.params.id);
-    db.deleteChart(req.params.id);
-    res.end("JSON accepted by server");
+	req.on("data", function(data) {
+		console.log('delete me')
+	});
+	console.log(req.params.id);
+	db.deleteChart(req.params.id);
+	res.end("JSON accepted by server");
 });
 
 router.get('/public/:id', function(req, res) {
@@ -207,17 +230,20 @@ router.get('/public/:id', function(req, res) {
 });
 
 router.get('/:id', function(req, res) {
-    var url = req.params.id;
-    db.getChartByUrl(url, function(err, result) {
-    	res.render('view', {
+	var url = req.params.id;
+	db.getChartByUrl(url, function(err, result) {
+		res.render('view', {
 			data: JSON.stringify(result.data)
-		});	
-    });
-    
+		});
+	});
+
 });
+
 function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) { return next(); }
-  res.redirect('/login');
+	if (req.isAuthenticated()) {
+		return next();
+	}
+	res.redirect('/login');
 }
 
 module.exports = router;
