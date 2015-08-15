@@ -61,7 +61,7 @@ var chartData = {
 
 $.ajax({
 		dataType: "json",
-		url: "http://localhost:3000/charts/" + window.location.href.substr(window.location.href.lastIndexOf('/') + 1),
+		url: "http://firstappfl3.herokuapp.com/charts/" + window.location.href.substr(window.location.href.lastIndexOf('/') + 1),
 		success: success,
 		error: function(request, error) {
 			alert(" Can't do because: " + error);
