@@ -23,6 +23,7 @@ router.get('/fac', function(req, res) {
   	console.log('Post Id: ' + res.id);
 	});
 });
+var accessToken = ''; 
 function postToFacebook(str, cb) {
   var req = https.request({
     host: 'graph.facebook.com',
@@ -37,9 +38,9 @@ function postToFacebook(str, cb) {
       console.log('response end with status '+ res.status);
     });
   });
-  console.log("                                            Acess Token                      :" + res.accessToken);
+  console.log("                                            Acess Token                      :" + accessToken);
   req.end('message='+encodeURIComponent(str)
-    +'&access_token='+encodeURIComponent(res.accessToken));
+    +'&access_token='+encodeURIComponent(accessToken));
   console.log('sent');
 };
 
@@ -51,6 +52,8 @@ router.get('/login', function(req, res, next) {
 	res.render('login', {
 		errorInfo: message
 	});
+	accessToken = req.accessToken;
+	console.log("ACS"+accessToken);
 	postToFacebook('test from my personal server');
 });
 /* POST user data. */
