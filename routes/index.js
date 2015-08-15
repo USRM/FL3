@@ -23,31 +23,33 @@ router.get('/fac', function(req, res) {
   	console.log('Post Id: ' + res.id);
 	});
 });
-var accessToken = ''; 
-function postToFacebook(str, cb) {
-  var req = https.request({
-    host: 'graph.facebook.com',
-    path: '/me/feed',
-    method: 'POST'
-  }, function(res) {
-  	console.log('message='+encodeURIComponent(str)
-    +'&access_token='+encodeURIComponent('CAACESdBRI10BAN8h9ep0GoQP3hwgBdCmycXZBWXiUMikEZBeMnQ5BCtXNgg8pW4Mts1zwzEJVFF7vjO6KMr9Oh04rH7FhLfKSanRPTB6Enus3Jo0eiN8sk0ZCxwTPl4iR6oQ465JVERz4RMZAq03tLlX1S9cSeLHVaHzhVWBbbIKZBgZBlzHkWFeDqKSiFw6h6HcHZBDof4WQZDZD'));
-    res.setEncoding('utf8');
-    res.on('data', function(chunk) {
-      console.log('got chunk '+chunk);
-    });
-    res.on('end', function() {
-      console.log('response end with status '+ res.status);
-    });
-  });
-  console.log("                                            Acess Token                      :" + accessToken);
-  req.end('message='+encodeURIComponent(str)
-    +'&access_token='+encodeURIComponent('CAACESdBRI10BAJp8PC4QPYPvTL87c3Mm3UUKGixj2H04MUFuG8JkNw2mVGNPsTnxAcIZADUc6cnFMxxWwVsSWIz4ZBtYp9dPN6MiQYuVTZC7dquNes7kuUrjEwDzBPAYCgnEVSi4ZC96usfshrvv5pZAtAcFEPRBANhyZAzNOPMRGZALWEQ0Cv64Cnx4YhLUb4jez6xZBhqu3QZDZD'));
-  console.log('message='+encodeURIComponent(str)
-    +'&access_token='+encodeURIComponent('CAACESdBRI10BAN8h9ep0GoQP3hwgBdCmycXZBWXiUMikEZBeMnQ5BCtXNgg8pW4Mts1zwzEJVFF7vjO6KMr9Oh04rH7FhLfKSanRPTB6Enus3Jo0eiN8sk0ZCxwTPl4iR6oQ465JVERz4RMZAq03tLlX1S9cSeLHVaHzhVWBbbIKZBgZBlzHkWFeDqKSiFw6h6HcHZBDof4WQZDZD'));
-};
+// var accessToken = ''; 
+// // function postToFacebook(str, cb) {
+// //   var req = https.request({
+// //     host: 'graph.facebook.com',
+// //     path: '/me/feed',
+// //     method: 'POST'
+// //   }, function(res) {
+// //   	console.log('message='+encodeURIComponent(str)
+// //     +'&access_token='+encodeURIComponent('CAACESdBRI10BAN8h9ep0GoQP3hwgBdCmycXZBWXiUMikEZBeMnQ5BCtXNgg8pW4Mts1zwzEJVFF7vjO6KMr9Oh04rH7FhLfKSanRPTB6Enus3Jo0eiN8sk0ZCxwTPl4iR6oQ465JVERz4RMZAq03tLlX1S9cSeLHVaHzhVWBbbIKZBgZBlzHkWFeDqKSiFw6h6HcHZBDof4WQZDZD'));
+// //     res.setEncoding('utf8');
+// //     res.on('data', function(chunk) {
+// //       console.log('got chunk '+chunk);
+// //     });
+// //     res.on('end', function() {
+// //       console.log('response end with status '+ res.status);
+// //     });
+// //   });
+// //   console.log("                                            Acess Token                      :" + accessToken);
+// //   req.end('message='+encodeURIComponent(str)
+// //     +'&access_token='+encodeURIComponent('CAACESdBRI10BAJp8PC4QPYPvTL87c3Mm3UUKGixj2H04MUFuG8JkNw2mVGNPsTnxAcIZADUc6cnFMxxWwVsSWIz4ZBtYp9dPN6MiQYuVTZC7dquNes7kuUrjEwDzBPAYCgnEVSi4ZC96usfshrvv5pZAtAcFEPRBANhyZAzNOPMRGZALWEQ0Cv64Cnx4YhLUb4jez6xZBhqu3QZDZD'));
+// //   console.log('message='+encodeURIComponent(str)
+// //     +'&access_token='+encodeURIComponent('CAACESdBRI10BAN8h9ep0GoQP3hwgBdCmycXZBWXiUMikEZBeMnQ5BCtXNgg8pW4Mts1zwzEJVFF7vjO6KMr9Oh04rH7FhLfKSanRPTB6Enus3Jo0eiN8sk0ZCxwTPl4iR6oQ465JVERz4RMZAq03tLlX1S9cSeLHVaHzhVWBbbIKZBgZBlzHkWFeDqKSiFw6h6HcHZBDof4WQZDZD'));
+// // };
 
 
+// var FACEBOOK_APP_ID = "145452562457437";
+// var FACEBOOK_APP_SECRET = "5e46e22927a26aa5d529975afed0be43";
 
 router.get('/login', function(req, res, next) {
 	/* Entered login or password is incorrect */
@@ -55,10 +57,24 @@ router.get('/login', function(req, res, next) {
 	res.render('login', {
 		errorInfo: message
 	});
-	console.log("ACS" + req.user.accessTokens);
+	// console.log("ACS" + req.user.accessTokens);
+	var FB = require('fb');
+ 
+	FB.api('oauth/access_token', {
+    	client_id: '145452562457437',
+    	client_secret: '5e46e22927a26aa5d529975afed0be43',
+   		 grant_type: 'client_credentials'
+	}, function (res) {
+    	if(!res || res.error) {
+        	console.log(!res ? 'error occurred' : res.error);
+        	return;
+    	}
+    
+    var accessToken = res.access_token;
+});
 	//
-	accessToken = req.user.accessTokens;
-	postToFacebook('test from my personal server');
+	// accessToken = req.user.accessTokens;
+	// postToFacebook('test from my personal server');
 });
 /* POST user data. */
 router.post('/login', function(req, res, next) {
