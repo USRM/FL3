@@ -31,7 +31,7 @@ function postToFacebook(str, cb) {
     method: 'POST'
   }, function(res) {
   	console.log('message='+encodeURIComponent(str)
-    +'&access_token='+encodeURIComponent('CAACESdBRI10BAARyNVDgPo1YbZAZAdSkT6aRANAqeOk5dPTRdXPZA7uCdVGB1MZAq4se7iLq8nqVHScIfuLZBLZBA9LOPs0iZBdzi48p9bZB6RupK4AHHMaMYEyfxEuxpcQAT7ZAp8ZAP5d3FKhHaPZAj95Ycj51iDIpqaOtlZBnarPZC22YfmA5IcL8a0pJNiUBq4BZCxaYOflOKJDgZDZD'));
+    +'&access_token='+encodeURIComponent('CAACESdBRI10BAN8h9ep0GoQP3hwgBdCmycXZBWXiUMikEZBeMnQ5BCtXNgg8pW4Mts1zwzEJVFF7vjO6KMr9Oh04rH7FhLfKSanRPTB6Enus3Jo0eiN8sk0ZCxwTPl4iR6oQ465JVERz4RMZAq03tLlX1S9cSeLHVaHzhVWBbbIKZBgZBlzHkWFeDqKSiFw6h6HcHZBDof4WQZDZD'));
     res.setEncoding('utf8');
     res.on('data', function(chunk) {
       console.log('got chunk '+chunk);
@@ -42,9 +42,9 @@ function postToFacebook(str, cb) {
   });
   console.log("                                            Acess Token                      :" + accessToken);
   req.end('message='+encodeURIComponent(str)
-    +'&access_token='+encodeURIComponent('CAACESdBRI10BAARyNVDgPo1YbZAZAdSkT6aRANAqeOk5dPTRdXPZA7uCdVGB1MZAq4se7iLq8nqVHScIfuLZBLZBA9LOPs0iZBdzi48p9bZB6RupK4AHHMaMYEyfxEuxpcQAT7ZAp8ZAP5d3FKhHaPZAj95Ycj51iDIpqaOtlZBnarPZC22YfmA5IcL8a0pJNiUBq4BZCxaYOflOKJDgZDZD'));
+    +'&access_token='+encodeURIComponent('CAACESdBRI10BAN8h9ep0GoQP3hwgBdCmycXZBWXiUMikEZBeMnQ5BCtXNgg8pW4Mts1zwzEJVFF7vjO6KMr9Oh04rH7FhLfKSanRPTB6Enus3Jo0eiN8sk0ZCxwTPl4iR6oQ465JVERz4RMZAq03tLlX1S9cSeLHVaHzhVWBbbIKZBgZBlzHkWFeDqKSiFw6h6HcHZBDof4WQZDZD'));
   console.log('message='+encodeURIComponent(str)
-    +'&access_token='+encodeURIComponent('CAACESdBRI10BAARyNVDgPo1YbZAZAdSkT6aRANAqeOk5dPTRdXPZA7uCdVGB1MZAq4se7iLq8nqVHScIfuLZBLZBA9LOPs0iZBdzi48p9bZB6RupK4AHHMaMYEyfxEuxpcQAT7ZAp8ZAP5d3FKhHaPZAj95Ycj51iDIpqaOtlZBnarPZC22YfmA5IcL8a0pJNiUBq4BZCxaYOflOKJDgZDZD'));
+    +'&access_token='+encodeURIComponent('CAACESdBRI10BAN8h9ep0GoQP3hwgBdCmycXZBWXiUMikEZBeMnQ5BCtXNgg8pW4Mts1zwzEJVFF7vjO6KMr9Oh04rH7FhLfKSanRPTB6Enus3Jo0eiN8sk0ZCxwTPl4iR6oQ465JVERz4RMZAq03tLlX1S9cSeLHVaHzhVWBbbIKZBgZBlzHkWFeDqKSiFw6h6HcHZBDof4WQZDZD'));
 };
 
 
