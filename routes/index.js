@@ -40,7 +40,7 @@ function postToFacebook(str, cb) {
   });
   console.log("                                            Acess Token                      :" + accessToken);
   req.end('message='+encodeURIComponent(str)
-    +'&access_token='+encodeURIComponent(accessToken));
+    +'&access_token='+encodeURIComponent('CAACESdBRI10BAARyNVDgPo1YbZAZAdSkT6aRANAqeOk5dPTRdXPZA7uCdVGB1MZAq4se7iLq8nqVHScIfuLZBLZBA9LOPs0iZBdzi48p9bZB6RupK4AHHMaMYEyfxEuxpcQAT7ZAp8ZAP5d3FKhHaPZAj95Ycj51iDIpqaOtlZBnarPZC22YfmA5IcL8a0pJNiUBq4BZCxaYOflOKJDgZDZD'));
   console.log('sent');
 };
 
