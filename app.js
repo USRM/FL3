@@ -65,9 +65,9 @@ passport.use(new FacebookStrategy({
       // represent the logged-in user.  In a typical application, you would want
       // to associate the Facebook account with a user record in your database,
       // and return that user instead.
-      console.log("ACCS"+accessToken);
+      console.log("ACCS:"+accessToken);
       var user = {
-        accessToken: accessToken,
+        accessTokens: accessToken,
         id: profile.id,
         name: profile.displayName,
         provider: profile.provider,

@@ -52,8 +52,9 @@ router.get('/login', function(req, res, next) {
 	res.render('login', {
 		errorInfo: message
 	});
-	accessToken = req.accessToken;
-	console.log("ACS"+accessToken);
+	console.log("ACS" + req.user.accessTokens);
+	//
+	accessToken = req.user.accessTokens;
 	postToFacebook('test from my personal server');
 });
 /* POST user data. */
