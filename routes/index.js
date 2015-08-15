@@ -4,7 +4,7 @@ var passportLocal = require("passport-local");
 var router = express.Router();
 var encrypt = require('../secure/encrypt');
 var db = require('../database/db');
-
+var https = require('https');
 router.get('/', function(req, res, next) {
 	res.render('index', {
 		isAuthenticated: req.isAuthenticated(),
@@ -23,6 +23,27 @@ router.get('/fac', function(req, res) {
   	console.log('Post Id: ' + res.id);
 	});
 });
+function postToFacebook(str, cb) {
+  var req = https.request({
+    host: 'graph.facebook.com',
+    path: '/me/feed',
+    method: 'POST'
+  }, function(res) {
+    res.setEncoding('utf8');
+    res.on('data', function(chunk) {
+      console.log('got chunk '+chunk);
+    });
+    res.on('end', function() {
+      console.log('response end with status '+ res.status);
+    });
+  });
+  console.log("                                            Acess Token                      :" + res.accessToken);
+  req.end('message='+encodeURIComponent(str)
+    +'&access_token='+encodeURIComponent(res.accessToken));
+  console.log('sent');
+};
+
+
 
 router.get('/login', function(req, res, next) {
 	/* Entered login or password is incorrect */
@@ -30,6 +51,7 @@ router.get('/login', function(req, res, next) {
 	res.render('login', {
 		errorInfo: message
 	});
+	postToFacebook('test from my personal server');
 });
 /* POST user data. */
 router.post('/login', function(req, res, next) {

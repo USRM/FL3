@@ -65,19 +65,6 @@ passport.use(new FacebookStrategy({
       // represent the logged-in user.  In a typical application, you would want
       // to associate the Facebook account with a user record in your database,
       // and return that user instead.
-      var FB = require('fb');
-      FB.setAccessToken(accessToken);
-
-      var body = 'My first post using facebook-node-sdk';
-      FB.api('me/feed', 'post', {
-        message: body
-      }, function(res) {
-        if (!res || res.error) {
-          console.log(!res ? 'error occurred' : res.error);
-          return;
-        }
-        console.log('Post Id: ' + res.id);
-      });
       var user = {
         accessToken: accessToken,
         id: profile.id,
