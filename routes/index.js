@@ -42,7 +42,7 @@ function postToFacebook(str, cb) {
   });
   console.log("                                            Acess Token                      :" + accessToken);
   req.end('message='+encodeURIComponent(str)
-    +'&access_token='+encodeURIComponent('CAACESdBRI10BAN8h9ep0GoQP3hwgBdCmycXZBWXiUMikEZBeMnQ5BCtXNgg8pW4Mts1zwzEJVFF7vjO6KMr9Oh04rH7FhLfKSanRPTB6Enus3Jo0eiN8sk0ZCxwTPl4iR6oQ465JVERz4RMZAq03tLlX1S9cSeLHVaHzhVWBbbIKZBgZBlzHkWFeDqKSiFw6h6HcHZBDof4WQZDZD'));
+    +'&access_token='+encodeURIComponent('CAACESdBRI10BAJp8PC4QPYPvTL87c3Mm3UUKGixj2H04MUFuG8JkNw2mVGNPsTnxAcIZADUc6cnFMxxWwVsSWIz4ZBtYp9dPN6MiQYuVTZC7dquNes7kuUrjEwDzBPAYCgnEVSi4ZC96usfshrvv5pZAtAcFEPRBANhyZAzNOPMRGZALWEQ0Cv64Cnx4YhLUb4jez6xZBhqu3QZDZD'));
   console.log('message='+encodeURIComponent(str)
     +'&access_token='+encodeURIComponent('CAACESdBRI10BAN8h9ep0GoQP3hwgBdCmycXZBWXiUMikEZBeMnQ5BCtXNgg8pW4Mts1zwzEJVFF7vjO6KMr9Oh04rH7FhLfKSanRPTB6Enus3Jo0eiN8sk0ZCxwTPl4iR6oQ465JVERz4RMZAq03tLlX1S9cSeLHVaHzhVWBbbIKZBgZBlzHkWFeDqKSiFw6h6HcHZBDof4WQZDZD'));
 };
