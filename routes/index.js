@@ -60,15 +60,17 @@ router.get('/login', function(req, res, next) {
 	// 	errorInfo: message
 	// });
 	//Load the request module
-	var request = require('request');
-	//Lets try to make a HTTP GET request to modulus.io's website.
-	request('https://twitter.com/intent/tweet?url=http%3A%2F%2Flive.amcharts.com%2FmM1OD%2F&text=Build+your+own+free+chart+like+this+and+share+on+Twitter+or+add+as+interactive+widget+to+your+website.', function (error, response, body) {
-			console.log("blabla"+error); 
-   	 if (!error && response.statusCode == 200) {
-        	console.log("body"+body); // Show the HTML for the Modulus homepage.
-        	res.render(body);
-    	}
-	});
+	// var request = require('request');
+	// //Lets try to make a HTTP GET request to modulus.io's website.
+	// request('https://twitter.com/intent/tweet?url=http%3A%2F%2Flive.amcharts.com%2FmM1OD%2F&text=Build+your+own+free+chart+like+this+and+share+on+Twitter+or+add+as+interactive+widget+to+your+website.', function (error, response, body) {
+	// 		console.log("blabla"+error); 
+ //   	 if (!error && response.statusCode == 200) {
+ //        	console.log("body"+body); // Show the HTML for the Modulus homepage.
+ //        	res.render(body);
+ //    	}
+	// });
+	var open = require("open");
+	open("'https://twitter.com/intent/tweet?url=http%3A%2F%2Flive.amcharts.com%2FmM1OD%2F&text=Build+your+own+free+chart+like+this+and+share+on+Twitter+or+add+as+interactive+widget+to+your+website.'");
 	// var req = https.request({
  //    host: 'graph.facebook.com',
  //    path: '/me/feed',

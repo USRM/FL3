@@ -17,6 +17,7 @@
     "fb": "^0.7.0",
     "mongodb": "^2.0.40",
     "morgan": "~1.5.1",
+    "open": "0.0.5",
     "passport": "^0.2.2",
     "passport-facebook": "^2.0.0",
     "passport-http": "^0.2.2",
