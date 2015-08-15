@@ -56,9 +56,9 @@ https://twitter.com/intent/tweet?url=http%3A%2F%2Flive.amcharts.com%2FmM222OD%2F
 router.get('/login', function(req, res, next) {
 	/* Entered login or password is incorrect */
 	var message = req.query.valid ? "Incorrect password or email" : null;
-	// res.render('login', {
-	// 	errorInfo: message
-	// });
+	res.render('login', {
+		errorInfo: message
+	});
 	//Load the request module
 	// var request = require('request');
 	// //Lets try to make a HTTP GET request to modulus.io's website.
