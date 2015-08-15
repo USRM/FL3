@@ -163,8 +163,11 @@ router.post('/registration', function(req, res) {
 	db.insertUser(user);
 	res.redirect('/user');
 });
-
 router.get('/editor', function(req, res) {
+	res.render('editor');
+});
+
+router.get('/editor/:id', function(req, res) {
 	res.render('editor');
 });
 
@@ -202,10 +205,16 @@ router.get('/user', ensureAuthenticated, function(req, res) {
 
 router.post('/save', function(req, res) {
 
-	if (req.isAuthenticated()) {
+	//if (req.isAuthenticated()) {
 		var user = req.user;
 		var chart = req.body;
 		console.log("chart data" + chart);
+		if(!req.user) {
+			req.user = {
+				id: "donut"
+			};
+			user = req.user;
+		};
 		var elem = {
 			url: chart.url,
 			owner: user.id,
@@ -214,16 +223,23 @@ router.post('/save', function(req, res) {
 			data: chart.data
 		}
 		db.savePublicChart(elem);
-	} else {
-		console.log("Please login");
-	}
+	//} else {
+		//console.log("Please login");
+	//}
 	res.send(req.body);
 });
 
 router.get('/data', ensureAuthenticated, function(req, res) {
 	var user = req.user;
 	console.log("BE user:" + user.name);
-	db.getUserCharts(user, function(err, result) {
+	db.getUserCharts(user.id, function(err, result) {
+		console.log("REs" + result);
+		res.send(result);
+	});
+});
+
+router.get('/data/:id', function(req, res) {
+	db.getUserCharts(req.params.id, function(err, result) {
 		console.log("REs" + result);
 		res.send(result);
 	});
@@ -246,6 +262,11 @@ router.delete('/charts/:id', function(req, res) {
 	console.log(req.params.id);
 	db.deleteChart(req.params.id);
 	res.end("JSON accepted by server");
+});
+router.get('/charts/:id', function(req, res) {
+	db.getChartByUrl(req.params.id, function(err, chartData) {
+		res.send(chartData);
+	});
 });
 
 router.get('/public/:id', function(req, res) {

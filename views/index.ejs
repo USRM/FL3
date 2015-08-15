@@ -2,7 +2,7 @@
 <html>
 <head>
 	<title>Main Page</title>
-	<link rel="stylesheet" href="public/stylesheets/homepage.css">
+	<link rel="stylesheet" href="/stylesheets/homepage.css">
 </head>
 <body>
 	<nav>BONchart
@@ -10,13 +10,28 @@
 			<% if(!isAuthenticated) { %>
 				<a href="/login">Log in</a>
 				<a href="/registration">Registration</a>
-				<a href="/facebook"><img src="public/images/facebook.png" width="50" height="50"></a>
-				<a href="/twitter"><img src="public/images/twitter.png" width="50" height="50"></a>
+				<a href="/facebook"><img src="/images/facebook.png" width="50" height="50"></a>
+				<a href="/twitter"><img src="/images/twitter.png" width="50" height="50"></a>
 			<% } else { %>
 				<a href='/'>Hello, <%= user.name %></a>
 				<a href="/logout">Log out</a>
 			<%}%>
 		</div>
 	</nav>	
+	<div id="mainContainer">
+		<input type="button" value="Make Chart" id="makeChartBtn" onclick="createModal()"/>
+		<div class="listContainer">
+			<div id="options">
+				<input type="button" value="Saved" onclick="loadContent('saved')"/>
+				<input type="button" value="Pie" onclick="loadContent('pie')"/>
+				<input type="button" value="Donut" onclick="loadContent('donut')"/>
+			</div>
+			<div id="contentContainer"></div>
+		</div>
+	</div>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.2.1/backbone-min.js"></script>
+	<script src="/javascripts/chartsList.js"></script>
 </body>
 </html>

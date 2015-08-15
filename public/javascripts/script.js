@@ -1,3 +1,4 @@
+console.log(window.location.href);
 var appearanceSettings = [{
 	mainItem: "Appearance",
 	subItems: null
@@ -17,39 +18,6 @@ var appearanceSettings = [{
 	mainItem: "Axis",
 	subItems: null
 }];
-// var dataAppearanceMatching = {
-// 	"axis": {
-// 		header: "y",
-// 		inputs: [{
-// 			"label": "Show",
-// 			"type": "checkbox",
-// 			"id": "show",
-// 			"checked": true
-// 		}, {
-// 			"label": "Max",
-// 			"type": "text",
-// 			"id": "max",
-// 			"value": undefined
-// 		}, {
-// 			"mult": true,
-// 			"subname": "label",
-// 			"elements": [{
-// 				"label": "Content",
-// 				"type": "text",
-// 				"id": "text",
-// 				"value": "Y Label"
-// 			}, {
-// 				"label": "Position",
-// 				"type": "text",
-// 				"id": "position",
-// 				"value": "outer-middle"
-// 			}]
-// 		}]
-// 	},
-// 	"appearance": {
-
-// 	}
-// };
 var chartData = {
 	bindto: '#chart',
 	axis: {
@@ -91,6 +59,60 @@ var chartData = {
 	}
 };
 
+$.ajax({
+		dataType: "json",
+		url: "http://localhost:3000/charts/" + window.location.href.substr(window.location.href.lastIndexOf('/') + 1),
+		success: success,
+		error: function(request, error) {
+			alert(" Can't do because: " + error);
+		}
+	});
+function success(data) {
+	chartData = data;
+	console.log(chartData);
+	var extendedMenuModel = new ExtendedMenuModel(chartData.data);
+	var chart = new ChartView({
+		el: $("#chart"),
+		model: extendedMenuModel
+	});
+	
+}
+// var dataAppearanceMatching = {
+// 	"axis": {
+// 		header: "y",
+// 		inputs: [{
+// 			"label": "Show",
+// 			"type": "checkbox",
+// 			"id": "show",
+// 			"checked": true
+// 		}, {
+// 			"label": "Max",
+// 			"type": "text",
+// 			"id": "max",
+// 			"value": undefined
+// 		}, {
+// 			"mult": true,
+// 			"subname": "label",
+// 			"elements": [{
+// 				"label": "Content",
+// 				"type": "text",
+// 				"id": "text",
+// 				"value": "Y Label"
+// 			}, {
+// 				"label": "Position",
+// 				"type": "text",
+// 				"id": "position",
+// 				"value": "outer-middle"
+// 			}]
+// 		}]
+// 	},
+// 	"appearance": {
+
+// 	}
+// };
+
+
+
 function appearToJSON(root, appear, targetValues) {
 	var json = {};
 	json[root] = {};
@@ -117,7 +139,7 @@ function appearToJSON(root, appear, targetValues) {
 	return json;
 }
 var ExtendedMenuModel = Backbone.Model.extend({});
-var extendedMenuModel = new ExtendedMenuModel(chartData);
+
 
 // var SettingsView = Backbone.View.extend({
 // 	appearance: {},
@@ -193,6 +215,7 @@ var ChartView = Backbone.View.extend({
 		this.render();
 	},
 	render: function() {
+		console.log(this.model.toJSON());
 		var chart = c3.generate(this.model.toJSON());
 	}
 });
@@ -212,11 +235,9 @@ var ChartView = Backbone.View.extend({
 // 	}
 // });
 var dataForServer;
+
 function initApp() {
-	var chart = new ChartView({
-		el: $("#chart"),
-		model: extendedMenuModel
-	});
+
 	// var settings = new SettingsView({
 	// 	el: $("#settings"),
 	// 	appearance: appearanceSettings
@@ -226,9 +247,9 @@ function initApp() {
 	// 	model: extendedMenuModel
 
 	// });
-	 var chartName = "Name";
+	var chartName = "Name";
 	var chartDescription = "My first chart. Save it. MongoDB.";
-	var id = Math.floor(Math.random()*1000000);
+	var id = Math.floor(Math.random() * 1000000);
 
 	dataForServer = {
 		name: chartName,
@@ -241,10 +262,49 @@ function initApp() {
 
 initApp();
 
+function populate() {
+	var defal = {
+		name: "pie",
+		description: "sdas",
+		url: ID(),
+		data: {
+			data: {
+				columns: [
+					['data1', 30],
+					['data2', 120],
+				],
+				type: 'donut',
+				onclick: function(d, i) {
+					console.log("onclick", d, i);
+				},
+				onmouseover: function(d, i) {
+					console.log("onmouseover", d, i);
+				},
+				onmouseout: function(d, i) {
+					console.log("onmouseout", d, i);
+				}
+			},
+			donut: {
+				title: "Iris Petal Width"
+			}
+		}
+	};
+
+	var request = $.ajax({
+		url: "/save",
+		async: true,
+		type: "POST",
+		data: defal,
+		contentType: "application/x-www-form-urlencoded", //This is what made the difference.
+		dataType: "json",
+
+	});
+}
 
 function ID() {
-  return Math.random().toString(36).substr(2, 9);
+	return Math.random().toString(36).substr(2, 9);
 };
+
 function save() {
 	console.log(dataForServer);
 	var request = $.ajax({
@@ -267,3 +327,4 @@ function save() {
 function share() {
 	$("#data").html("http://localhost:3000/" + dataForServer.url);
 }
+

@@ -13,3 +13,38 @@ nav {
 a {
 	color: white;
 }
+#mainContainer {
+	width: 1000px;
+	height: 600px;
+	margin: 0 auto;
+	background-color: rgb(202, 225, 255)
+}
+#makeChartBtn {
+	display: block;
+	margin: 0 auto;
+	background-color: rgb(162, 225, 255)
+}
+.listContainer {
+	width: 500px;
+	height: 400px;
+	margin: 0 auto;
+	position: absolute;
+	top: 150px;
+	left: 200px;
+	background-color: rgb(200, 200, 200);
+	display: none;
+}
+.show {
+	display: block;
+}
+#contentContainer {
+	width: 70%;
+
+}
+#options {
+	float: left;
+	width: 30%;
+}
+#options input{
+	display: block;
+}

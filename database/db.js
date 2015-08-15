@@ -47,6 +47,7 @@ function savePublicChart(chart) {
 				data: chart.data,
 				'public': chart.public,
 				url: chart.url,
+				id: chart.url,
 				owner: chart.owner
 			}
 		, {
@@ -104,7 +105,7 @@ function checkСorrectness(username, callback) {
 	});
 }
 
-function getUserCharts(user, callback) {
+function getUserCharts(id, callback) {
 	MongoClient.connect(url, function(err, db) {
 		/* Error */
 		if (err) {
@@ -114,17 +115,17 @@ function getUserCharts(user, callback) {
 			var collection = db.collection("charts");
 			/* find user by username*/
 			collection.find({
-				owner: user.id
+				owner: id
 			}).toArray(function(err, result) {
 				/* user is found */
 				console.log(result.length);
-				var json = {};
-				json.charts = [];
+				var charts = [];
 				for (var i = 0; i < result.length; ++i) {
 					console.log(result[i]);
-					json.charts.push(result[i]);
+					charts.push(result[i]);
 				}
-				callback(err, json);
+				console.log("charts"+charts);
+				callback(err, charts);
 				// }
 				db.close();
 			});
