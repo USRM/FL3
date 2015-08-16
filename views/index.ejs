@@ -3,24 +3,190 @@
 <head>
 	<title>Main Page</title>
 	<link rel="stylesheet" href="/stylesheets/homepage.css">
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </head>
 <body>
-	<nav>BONchart
-		<div id='userInfo'>
-			<% if(!isAuthenticated) { %>
-				<a href="/login">Log in</a>
-				<a href="/registration">Registration</a>
-				<a href="/facebook"><img src="/images/facebook.png" width="50" height="50"></a>
-				<a href="/twitter"><img src="/images/twitter.png" width="50" height="50"></a>
-			<% } else { %>
-				<a href='/'>Hello, <%= user.name %></a>
-				<a href="/logout">Log out</a>
-			<%}%>
-		</div>
-	</nav>	
-	<div id="mainContainer">
-		<input type="button" value="Make Chart" id="makeChartBtn" onclick="createModal()"/>
-		<div class="listContainer">
+
+<nav>
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="true" aria-controls="navbar">
+            <button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#login">Log in</button>
+        	<button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#register">Register</button>
+          </div>
+          <a class="navbar-brand" href="#">Project name</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 1.11111116409302px;">
+          <div class="navbar-form navbar-right">
+          <% if(isAuthenticated) {%>
+          <a href="/"><%=user.name%></a>
+          <a href="/logout">Logout</a>
+          
+          <%}else {%>
+          
+            <button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#login">Log in</button>
+        	<button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#register">Register</button>
+          
+          <%}%>
+          </div>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </nav>
+
+
+<!-- Trigger the modal with a button -->
+<div class="modal fade bs-example-modal-sm" id="login" role="dialog" aria-labelledby="gridSystemModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="gridSystemModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+           <div class="col-md-5" >
+			<a href="/facebook"><img src="http://techulus.com/buttons/fb.png" /></a><br/><br/>
+			<a href="/twitter"><img src="http://techulus.com/buttons/tw.png" /></a><br/>
+			</div>
+			<div class="col-md-7" style="border-left:1px solid #ccc;height:160px">
+					<form class="form-horizontal" id="loginForm" action="/login" method="post">
+						<fieldset>
+				  <input id="username" name="username" placeholder="Enter Email" type="text" class="form-control input-md">
+				  <br/>
+				  <input id="password" name="password" type="password" placeholder="Enter Password" class="form-control input-md">
+				  <br/>
+				  <button type="submit" id="singlebutton" name="singlebutton" class="btn btn-info btn-sm pull-right">Sign In</button>
+
+
+			</fieldset>
+			</form>
+			</div>
+        </div>
+      </div>
+     <!--  <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div> -->
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade bs-example-modal-sm" id="register" role="dialog" aria-labelledby="gridSystemModalLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="gridSystemModalLabel">Register</h4>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+           <form class="form-horizontal"  action='/registration' method="POST">
+  <fieldset>
+    <div class="control-group">
+      <!-- Username -->
+      <label class="control-label"  for="name">Username</label>
+      <div class="controls">
+        <input type="text" id="name" name="name" placeholder="" class="input-xlarge">
+        <p class="help-block">Username can contain any letters or numbers, without spaces</p>
+      </div>
+    </div>
+ 
+    <div class="control-group">
+      <!-- E-mail -->
+      <label class="control-label" for="email">E-mail</label>
+      <div class="controls">
+        <input type="text" id="email" name="email" placeholder="" class="input-xlarge">
+        <p class="help-block">Please provide your E-mail</p>
+      </div>
+    </div>
+ 
+    <div class="control-group">
+      <!-- Password-->
+      <label class="control-label" for="password">Password</label>
+      <div class="controls">
+        <input type="password" id="password" name="password" placeholder="" class="input-xlarge">
+        <p class="help-block">Password should be at least 4 characters</p>
+      </div>
+    </div>
+ 
+    <div class="control-group">
+      <!-- Password -->
+      <label class="control-label"  for="password_confirm">Password (Confirm)</label>
+      <div class="controls">
+        <input type="password" id="password_confirm" name="password_confirm" placeholder="" class="input-xlarge">
+        <p class="help-block">Please confirm password</p>
+      </div>
+    </div>
+ 
+    <div class="control-group">
+      <!-- Button -->
+      <div class="controls">
+        <button class="btn btn-success pull-right">Register</button>
+      </div>
+    </div>
+  </fieldset>
+</form>
+        </div>
+      </div>
+     <!--  <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div> -->
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+
+
+
+
+<div class="modal fade bs-example-modal-sm" id="listContainer" role="dialog" aria-labelledby="gridSystemModalLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="gridSystemModalLabel">Register</h4>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+           <div id="options">
+				<input type="button" value="Saved" onclick="loadContent('saved')"/>
+				<input type="button" value="Pie" onclick="loadContent('pie')"/>
+				<input type="button" value="Donut" onclick="loadContent('donut')"/>
+			</div>
+			<div id="contentContainer"></div>
+        </div>
+      </div>
+     <!--  <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div> -->
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+
+<div class="listContainer">
 			<div id="options">
 				<input type="button" value="Saved" onclick="loadContent('saved')"/>
 				<input type="button" value="Pie" onclick="loadContent('pie')"/>
@@ -28,10 +194,37 @@
 			</div>
 			<div id="contentContainer"></div>
 		</div>
-	</div>
+
+ -->
+
+
+
+
+	<div id="mainContainer">
+	   <button type="button" class="btn btn-default" data-toggle="modal" data-target="#listContainer">Make Chart</button>
+		<!-- <input type="button" value="Make Chart" id="makeChartBtn" onclick="createModal()"/>
+	 --></div>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.2.1/backbone-min.js"></script>
 	<script src="/javascripts/chartsList.js"></script>
+	<script src="/javascripts/checkLogin.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

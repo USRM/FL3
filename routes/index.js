@@ -11,20 +11,7 @@ router.get('/', function(req, res, next) {
 		user: req.user
 	});
 });
-router.get('/fac', function(req, res) {
-	var FB = require('fb');
 
-	var body = 'My first post using facebook-node-sdk';
-	FB.api('me/feed', 'post', {
-		message: body
-	}, function(res) {
-		if (!res || res.error) {
-			console.log(!res ? 'error occurred' : res.error);
-			return;
-		}
-		console.log('Post Id: ' + res.id);
-	});
-});
 // var accessToken = ''; 
 // // function postToFacebook(str, cb) {
   // var req = https.request({
@@ -52,13 +39,19 @@ router.get('/fac', function(req, res) {
 
 // var FACEBOOK_APP_ID = "145452562457437";
 // var FACEBOOK_APP_SECRET = "5e46e22927a26aa5d529975afed0be43";
-https://twitter.com/intent/tweet?url=http%3A%2F%2Flive.amcharts.com%2FmM222OD%2F&text=Build+your+own+free+chart+like+this+and+share+on+Twitter+or+add+as+interactive+widget+to+your+website.
-router.get('/login', function(req, res, next) {
+//https://twitter.com/intent/tweet?url=http%3A%2F%2Flive.amcharts.com%2FmM222OD%2F&text=Build+your+own+free+chart+like+this+and+share+on+Twitter+or+add+as+interactive+widget+to+your+website.
+router.get('/login/:id', function(req, res, next) {
 	/* Entered login or password is incorrect */
-	var message = req.query.valid ? "Incorrect password or email" : null;
-	res.render('login', {
-		errorInfo: message
-	});
+	console.log("Here" + req.params.id);
+	db.checkСorrectness(req.params.id, function(err, user) {
+    if (user) {
+    	console.log("YES");
+      res.status(200).send('GOOD');
+    } else {
+    	console.log("NO");
+      res.status(404).send('Error');
+    }
+  });
 	//Load the request module
 	// var request = require('request');
 	// //Lets try to make a HTTP GET request to modulus.io's website.
@@ -138,7 +131,7 @@ router.post('/login', function(req, res, next) {
 			if (err) {
 				return next(err);
 			}
-			return res.redirect('/user');
+			return res.redirect('/');
 		});
 	})(req, res, next);
 });
@@ -149,7 +142,7 @@ router.get('/logout', function(req, res) {
 });
 /* Registration */
 router.get('/registration', function(req, res) {
-	res.render('registration');
+	res.redirect('/');
 });
 /* Registrate new user */
 router.post('/registration', function(req, res) {
@@ -161,7 +154,7 @@ router.post('/registration', function(req, res) {
 		charts: []
 	};
 	db.insertUser(user);
-	res.redirect('/user');
+	res.redirect('/');
 });
 router.get('/editor', function(req, res) {
 	res.render('editor');
@@ -205,16 +198,10 @@ router.get('/user', ensureAuthenticated, function(req, res) {
 
 router.post('/save', function(req, res) {
 
-	//if (req.isAuthenticated()) {
+	if (req.isAuthenticated()) {
 		var user = req.user;
 		var chart = req.body;
 		console.log("chart data" + chart);
-		if(!req.user) {
-			req.user = {
-				id: "donut"
-			};
-			user = req.user;
-		};
 		var elem = {
 			url: chart.url,
 			owner: user.id,
@@ -223,19 +210,25 @@ router.post('/save', function(req, res) {
 			data: chart.data
 		}
 		db.savePublicChart(elem);
-	//} else {
-		//console.log("Please login");
-	//}
+	} else {
+		console.log("Please login");
+	}
 	res.send(req.body);
 });
 
-router.get('/data', ensureAuthenticated, function(req, res) {
+router.get('/data', function(req, res) {
 	var user = req.user;
-	console.log("BE user:" + user.name);
+	console.log('/////////////////////////////////');
+	console.log(user);
+	if(user) {
 	db.getUserCharts(user.id, function(err, result) {
 		console.log("REs" + result);
 		res.send(result);
 	});
+} 
+else {
+	res.send("Please Log in");
+}
 });
 
 router.get('/data/:id', function(req, res) {

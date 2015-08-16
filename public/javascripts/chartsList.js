@@ -37,6 +37,8 @@ var ChartModel = Backbone.Model.extend({
 	urlRoot: "/charts"
 });
 
+
+var answ ;
 var ChartCollection = Backbone.Collection.extend({
 	model: ChartModel,
 	url: '/data',
@@ -54,10 +56,13 @@ var ChartCollection = Backbone.Collection.extend({
 		console.log('Collection fetch success', response);
 		console.log('Collection models: ', collection.models);
 		//this.trigger("reset");
+		ans =true;
 	},
 
 	fetchError: function(collection, response) {
-		throw new Error("Books fetch error");
+		console.log('Collection models: ', collection.models);
+		$('#contentContainer').html('Please login');
+		//throw new Error("Books fetch error");
 	}
 
 });
